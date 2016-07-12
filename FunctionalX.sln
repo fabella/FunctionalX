@@ -1,0 +1,41 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{73E173A9-E393-42C2-917D-5A7D59D028B4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC15612B-AE28-4283-AB56-C0D6D5A2510E}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FunctionalX", "src\FunctionalX\FunctionalX.xproj", "{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{6074EC62-98C9-434B-8A39-2A198F96568F}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "FunctionalX.Tests", "test\FunctionalX.Tests\FunctionalX.Tests.xproj", "{4C638C2A-8401-4E6C-AF97-C01A4120013E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C638C2A-8401-4E6C-AF97-C01A4120013E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C638C2A-8401-4E6C-AF97-C01A4120013E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C638C2A-8401-4E6C-AF97-C01A4120013E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C638C2A-8401-4E6C-AF97-C01A4120013E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{C377C5E8-5BD4-4087-8524-7CDAF1C87CCE} = {73E173A9-E393-42C2-917D-5A7D59D028B4}
+		{4C638C2A-8401-4E6C-AF97-C01A4120013E} = {6074EC62-98C9-434B-8A39-2A198F96568F}
+	EndGlobalSection
+EndGlobal
