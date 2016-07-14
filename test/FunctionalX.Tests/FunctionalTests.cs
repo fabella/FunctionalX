@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -22,7 +22,7 @@ namespace FunctionalX.Tests
             {
                 FromJust(Just<string>(val));
             }
-            catch (InvalidOperationException e)
+            catch (InvalidOperationException)
             {
                 return true;
             }
@@ -49,7 +49,6 @@ namespace FunctionalX.Tests
             var sut = empty.ListToMaybe();
             Assert.IsTrue(Nothing == sut);
         }
-
         [Test]
         public void ListToMaybeOnNonEmptyList()
         {
@@ -100,7 +99,6 @@ namespace FunctionalX.Tests
             var sut = xs.MapMaybe(x => x == null ? Nothing : Just(x.ToUpper()));
             Assert.AreEqual(3, sut.Count());
             Assert.AreEqual(new List<string>() { "X", "Y", "Z"}, sut);
-            
         }
     }
 }

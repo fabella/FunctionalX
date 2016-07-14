@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace FunctionalX
 {
@@ -44,5 +44,13 @@ namespace FunctionalX
             => opt.IsJust && arg.IsJust
                 ? Just(opt.Value(arg.Value))
                 : Nothing;
+
+        public static Maybe<R> Map<T,R>(this Maybe<T> val, Func<T,R> f)
+            => val.IsJust
+                ? Just(f(val.Value))
+                : Nothing;
+
+        public static Maybe<R> Select<T,R>(this Maybe<T> val, Func<T,R> f)
+            => val.Map(f);
     }
 }

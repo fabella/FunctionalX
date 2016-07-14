@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
+using System;
 
 namespace FunctionalX.Tests
 {
@@ -30,5 +31,45 @@ namespace FunctionalX.Tests
         [TestCase("marias", "marias", ExpectedResult = true)]
         public bool EqualOperatorTest(string left, string right)
             => Just(left) == Just(right);
+
+        [Test]
+        public void ApplyTestsOnJust()
+        {
+            Func<string, int> func = (s) => int.Parse(s);
+            var val = Just(func);
+
+            var sut = val.Apply(Just("3"));
+            Assert.AreEqual(Just(3), sut);
+        }
+
+        [Test]
+        public void ApplyTestsOnNothing()
+        {
+            Func<string, int> func = (s) => int.Parse(s);
+            var val = Just(func);
+
+            var sut = val.Apply(Nothing);
+            Assert.IsTrue(Nothing == sut);
+        }
+
+        [Test]
+        public void MapTestsOnJust()
+        {
+            var x = Just(3);
+
+            var sut = x.Map(y => y * 2);
+
+            Assert.AreEqual(Just(6), sut);
+        }
+
+        [Test]
+        public void MapTestsOnNothing()
+        {
+            var x = (Maybe<int>)Nothing;
+
+            var sut = x.Map(y => y * 2);
+
+            Assert.IsTrue(Nothing == sut);
+        }
     }
 }
