@@ -50,7 +50,18 @@ namespace FunctionalX
                 ? Just(f(val.Value))
                 : Nothing;
 
+        public static Maybe<R> Bind<T,R>(this Maybe<T> val, Func<T, Maybe<R>> func)
+            => val.IsJust
+                ? func(val.Value)
+                : Nothing;
+
         public static Maybe<R> Select<T,R>(this Maybe<T> val, Func<T,R> f)
             => val.Map(f);
+
+        public static Maybe<Unit> ForEach<T>(this Maybe<T> val, Action<T> action)
+            => val.Map(action.ToFunc());
+
+        public static Maybe<T> Where<T>(this Maybe<T> value, Func<T, bool> predicate)
+            => value.IsJust && predicate(value.Value) ? value : Nothing;
     }
 }

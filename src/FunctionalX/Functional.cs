@@ -7,6 +7,9 @@ namespace FunctionalX
 {
     public static class Functional
     {
+        private static readonly Unit unit = new Unit();
+
+        public static Unit Unit() => unit;
         /// <summary>
         /// This function allows you to create a Maybe struct
         /// </summary>
@@ -98,5 +101,6 @@ namespace FunctionalX
         /// <returns></returns>
         public static IEnumerable<R> MapMaybe<T, R>(this IEnumerable<T> xs, Func<T, Maybe<R>> map)
             => xs.Select(map).Where(x => x.IsJust).Select(x => x.Value);
+
     }
 }
