@@ -1,11 +1,12 @@
 using System;
+using System.Collections.Generic;
 
 namespace FunctionalX
 {
     using static Functional;
     public struct Maybe<T>
     {
-        public static readonly Maybe<T> Nothing = new Maybe<T>(); 
+        public static readonly Maybe<T> Nothing = new Maybe<T>();
 
         internal T Value { get; }
         public bool IsJust { get; }
@@ -19,6 +20,12 @@ namespace FunctionalX
 
         public static implicit operator Maybe<T>(T value) => Just(value);
         public static implicit operator Maybe<T>(NothingType _) => Nothing;
+
+        public IEnumerable<T> AsEnumerable()
+        {
+            if(IsJust)
+                yield return Value;
+        }
 
         public R Match<R>(Func<R> Nothing, Func<T, R> Just)
             => IsJust ? Just(Value) : Nothing();

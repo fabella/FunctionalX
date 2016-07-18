@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.Linq;
 
 namespace FunctionalX.Tests
 {
@@ -63,13 +64,24 @@ namespace FunctionalX.Tests
         }
 
         [Test]
-        public void MapTestsOnNothing()
+        public void AsEnumerableTestOnJust()
         {
-            var x = (Maybe<int>)Nothing;
+            var x = Just(3);
 
-            var sut = x.Map(y => y * 2);
+            var sut = x.AsEnumerable();
 
-            Assert.IsTrue(Nothing == sut);
+            Assert.AreEqual(1, sut.Count());
+            Assert.IsTrue(Just(3) == sut.First());
+        }
+
+        [Test]
+        public void AsEnumerableTestOnNothing()
+        {
+            Maybe<int> x = Nothing;
+
+            var sut = x.AsEnumerable();
+
+            Assert.AreEqual(0, sut.Count());
         }
     }
 }
