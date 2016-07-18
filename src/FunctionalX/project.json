@@ -1,0 +1,20 @@
+{
+  "title": "FunctionalX",
+  "summary": "Functional library constructs for C# language.",
+  "authors": ["Fidel Abella"],
+  "description": "Functional library constructs to C# language",
+  "version": "1.0.0-*",
+  "language": "English",
+  "tags": ["functional"],
+
+  "dependencies": {
+    "NETStandard.Library": "1.6.0",
+    "System.Collections.Immutable": "1.2.0"
+  },
+
+  "frameworks": {
+    "netstandard1.6": {
+      "imports": "dnxcore50"
+    }
+  }
+}
