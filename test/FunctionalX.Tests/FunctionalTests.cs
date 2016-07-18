@@ -100,5 +100,14 @@ namespace FunctionalX.Tests
             Assert.AreEqual(3, sut.Count());
             Assert.AreEqual(new List<string>() { "X", "Y", "Z"}, sut);
         }
+
+        [Test]
+        public void ListTest()
+        {
+            var sut = List(1, 2, 3);
+            Assert.IsTrue(3 == sut.Count());
+            Assert.IsTrue(1 == sut.First());
+            Assert.IsTrue(3 == sut.Last());
+        }
     }
 }

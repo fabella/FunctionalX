@@ -1,12 +1,14 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 
 namespace FunctionalX
 {
     public static class Functional
     {
+        // ReSharper disable once InconsistentNaming
         private static readonly Unit unit = new Unit();
 
         public static Unit Unit() => unit;
@@ -56,18 +58,16 @@ namespace FunctionalX
                 return just.Value;
             throw new InvalidOperationException("Exception: Maybe.FromJust: Nothing");
         }
+
         /// <summary>
         /// This function returns Nothing if the list is empty or Just a where a is the first element in the list.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="xs"></param>
         /// <returns></returns>
+        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static Maybe<T> ListToMaybe<T>(this IEnumerable<T> xs)
-        {
-            if (xs.Any())
-                return Just(xs.First());
-            return Nothing;
-        }
+            => xs.Any() ? Just(xs.First()) : Nothing;
 
         /// <summary>
         /// This function returns an empty list when given Nothing
@@ -95,12 +95,20 @@ namespace FunctionalX
         /// If it is Just R, then the element is added to the list.
         /// </summary>
         /// <typeparam name="T"></typeparam>
-        /// <typeparam name="R"></typeparam>
+        /// <typeparam name="TR"></typeparam>
         /// <param name="xs">List of values</param>
         /// <param name="map">Map function to map value from T to R</param>
         /// <returns></returns>
-        public static IEnumerable<R> MapMaybe<T, R>(this IEnumerable<T> xs, Func<T, Maybe<R>> map)
+        public static IEnumerable<TR> MapMaybe<T, TR>(this IEnumerable<T> xs, Func<T, Maybe<TR>> map)
             => xs.Select(map).Where(x => x.IsJust).Select(x => x.Value);
 
+        /// <summary>
+        /// Creates an immutable list with the given values
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items">items to be added to the list</param>
+        /// <returns>Immutable list with the items passed in</returns>
+        public static IEnumerable<T> List<T>(params T[] items)
+            => items.ToImmutableList();
     }
 }

@@ -23,12 +23,18 @@ namespace FunctionalX
 
         public IEnumerable<T> AsEnumerable()
         {
-            if(IsJust)
+            if (IsJust)
                 yield return Value;
         }
 
-        public R Match<R>(Func<R> Nothing, Func<T, R> Just)
+        // ReSharper disable InconsistentNaming
+        // ReSharper disable once ParameterHidesMember
+        public TR Match<TR>(Func<TR> Nothing, Func<T, TR> Just)
             => IsJust ? Just(Value) : Nothing();
+        // ReSharper restore InconsistentNaming
+
+        public override bool Equals(object obj)
+            => ReferenceEquals(null, obj) == false && (obj is Maybe<T> && Equals((Maybe<T>)obj));
 
         public bool Equals(Maybe<T> other)
             => IsJust == other.IsJust
@@ -39,7 +45,15 @@ namespace FunctionalX
         public static bool operator ==(Maybe<T> @this, Maybe<T> other) => @this.Equals(other);
         public static bool operator !=(Maybe<T> @this, Maybe<T> other) => !(@this == other);
 
-        public override string ToString() => IsJust ? $"Just {Value}" : "Nothing";
+        public override string ToString() => IsJust ? $"Just {Value}" : "nothingFunc";
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                return (EqualityComparer<T>.Default.GetHashCode(Value) * 397) ^ Value.GetHashCode();
+            }
+        }
     }
 
     public static class Maybe
@@ -47,22 +61,22 @@ namespace FunctionalX
         public static Maybe<T> Of<T>(T value)
             => new Maybe<T>(value, value != null);
 
-        public static Maybe<R> Apply<T, R>(this Maybe<Func<T, R>> opt, Maybe<T> arg)
+        public static Maybe<TR> Apply<T, TR>(this Maybe<Func<T, TR>> opt, Maybe<T> arg)
             => opt.IsJust && arg.IsJust
                 ? Just(opt.Value(arg.Value))
                 : Nothing;
 
-        public static Maybe<R> Map<T,R>(this Maybe<T> val, Func<T,R> f)
+        public static Maybe<TR> Map<T, TR>(this Maybe<T> val, Func<T, TR> f)
             => val.IsJust
                 ? Just(f(val.Value))
                 : Nothing;
 
-        public static Maybe<R> Bind<T,R>(this Maybe<T> val, Func<T, Maybe<R>> func)
+        public static Maybe<TR> Bind<T, TR>(this Maybe<T> val, Func<T, Maybe<TR>> func)
             => val.IsJust
                 ? func(val.Value)
                 : Nothing;
 
-        public static Maybe<R> Select<T,R>(this Maybe<T> val, Func<T,R> f)
+        public static Maybe<TR> Select<T, TR>(this Maybe<T> val, Func<T, TR> f)
             => val.Map(f);
 
         public static Maybe<Unit> ForEach<T>(this Maybe<T> val, Action<T> action)
