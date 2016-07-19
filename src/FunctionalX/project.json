@@ -1,20 +1,50 @@
 {
+  "version": "1.0.1-*",
   "title": "FunctionalX",
-  "summary": "Functional library constructs for C# language.",
-  "authors": ["Fidel Abella"],
+  "authors": [ "Fidel Abella" ],
   "description": "Functional library constructs to C# language",
-  "version": "1.0.0-*",
   "language": "English",
-  "tags": ["functional"],
 
-  "dependencies": {
-    "NETStandard.Library": "1.6.0",
-    "System.Collections.Immutable": "1.2.0"
+  "packOptions": {
+    "summary": "Functional library constructs for C# language.",
+    "tags": [ "functional" ],
+    "owners": [ "Fidel Abella" ],
+    "licenseUrl": "http://www.apache.org/licenses/LICENSE-2.0",
+    "requireLicenseAcceptance": false,
+    "repository": {
+      "url": "https://github.com/fabella/FunctionalX.git"
+    }
+  },
+
+  "configurations": {
+    "Debug": {
+      "buildOptions": {
+        "define": [ "DEBUG", "TRACE" ]
+      }
+    },
+    "Release": {
+      "buildOptions": {
+        "define": [ "RELEASE", "TRACE" ],
+        "optimize": true
+      }
+    }
   },
 
   "frameworks": {
+    "net46": {
+      "dependencies": {
+        "System.Collections.Immutable": "1.2.0"
+      }
+    },
     "netstandard1.6": {
-      "imports": "dnxcore50"
+      "imports": "dnxcore50",
+      "buildOptions": {
+        "define": [ "PCL" ]
+      },
+      "dependencies": {
+        "NETStandard.Library": "1.6.0",
+        "System.Collections.Immutable": "1.2.0"
+      }
     }
   }
 }
