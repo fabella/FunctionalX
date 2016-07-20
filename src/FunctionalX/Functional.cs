@@ -110,5 +110,98 @@ namespace FunctionalX
         /// <returns>Immutable list with the items passed in</returns>
         public static IEnumerable<T> List<T>(params T[] items)
             => items.ToImmutableList();
+
+        #region Currying and Partial Function Application
+
+        /// <summary>
+        /// Partial function application for functions that take two parameters
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">Function to be partially applied</param>
+        /// <param name="t1">First argument to partially apply</param>
+        /// <returns></returns>
+        public static Func<T2, TR> Apply<T1, T2, TR>(this Func<T1, T2, TR> func, T1 t1)
+            => t2 => func(t1, t2);
+
+        /// <summary>
+        /// Partial function application for functions that take three parameters
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">Function to be partially applied the first value</param>
+        /// <param name="t1">First value to apply</param>
+        /// <returns></returns>
+        public static Func<T2, T3, TR> Apply<T1, T2, T3, TR>(this Func<T1, T2, T3, TR> func, T1 t1)
+            => (t2, t3) => func(t1, t2, t3);
+
+        /// <summary>
+        /// Partial function application for functions that take four parameters
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">Function to be partially applied the first value</param>
+        /// <param name="t1">First value to apply</param>
+        /// <returns></returns>
+        public static Func<T2, T3, T4, TR> Apply<T1, T2, T3, T4, TR>(this Func<T1, T2, T3, T4, TR> func, T1 t1)
+            => (t2, t3, t4) => func(t1, t2, t3, t4);
+
+        /// <summary>
+        /// Curry for a function that has two parameters. Returns function that takes one value and returns another
+        /// function that takes the second parameter and returns the result
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">function to be curried</param>
+        /// <returns></returns>
+        public static Func<T1, Func<T2, TR>> Curry<T1, T2, TR>(this Func<T1, T2, TR> func)
+            => t1 => t2 => func(t1, t2);
+
+        /// <summary>
+        /// Curry for a function that has three parameters.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">function to be curried</param>
+        /// <returns></returns>
+        public static Func<T1, Func<T2, Func<T3, TR>>> Curry<T1, T2, T3, TR>(this Func<T1, T2, T3, TR> func)
+            => t1 => t2 => t3 => func(t1, t2, t3);
+
+        /// <summary>
+        /// Curry for a function that has four parameters.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="TR"></typeparam>
+        /// <param name="func">function to be curried</param>
+        /// <returns></returns>
+        public static Func<T1, Func<T2, Func<T3, Func<T4, TR>>>> Curry<T1, T2, T3, T4, TR>(this Func<T1, T2, T3, T4, TR> func)
+            => t1 => t2 => t3 => t4 => func(t1, t2, t3, t4);
+
+        public static Func<T, T, TR> SwapArgs<T, TR>(this Func<T, T, TR> func)
+            => (t1, t2) => func(t2, t1);
+        #endregion
+
+        #region Function Composition
+        /// <summary>
+        /// Composes two functions by applying f1 first and then applying the result of f1 to f2
+        /// The types must match.
+        /// </summary>
+        /// <typeparam name="T1"></typeparam>
+        /// <typeparam name="T2"></typeparam>
+        /// <typeparam name="T3"></typeparam>
+        /// <param name="f1">Function to be applied first</param>
+        /// <param name="f2">Function to be applied second</param>
+        /// <returns></returns>
+        public static Func<T1, T3> Compose<T1, T2, T3>(this Func<T1, T2> f1, Func<T2, T3> f2)
+            => t1 => f2(f1(t1));
+        #endregion
     }
 }
