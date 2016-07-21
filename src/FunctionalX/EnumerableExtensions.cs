@@ -10,7 +10,7 @@ namespace FunctionalX
         public static IEnumerable<TR> Map<T,TR>(this IEnumerable<T> @this, Func<T,TR> func)
             => @this.Select(func);
 
-        public static Unit Foreach<T>(this IEnumerable<T> @this, Action<T> action)
+        public static Unit ForEach<T>(this IEnumerable<T> @this, Action<T> action)
         {
             foreach(var t in @this)
                 action(t);
