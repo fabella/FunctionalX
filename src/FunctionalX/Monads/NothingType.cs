@@ -1,4 +1,4 @@
-namespace FunctionalX
+namespace FunctionalX.Monads
 {
     public struct NothingType
     {

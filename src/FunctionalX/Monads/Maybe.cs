@@ -1,9 +1,8 @@
 using System;
 using System.Collections.Generic;
 
-namespace FunctionalX
+namespace FunctionalX.Monads
 {
-    using static Functional;
     public struct Maybe<T>
     {
         public static readonly Maybe<T> Nothing = new Maybe<T>();
@@ -18,7 +17,7 @@ namespace FunctionalX
             IsJust = isJust;
         }
 
-        public static implicit operator Maybe<T>(T value) => Just(value);
+        public static implicit operator Maybe<T>(T value) => Maybe.Of(value);
         public static implicit operator Maybe<T>(NothingType _) => Nothing;
 
         public IEnumerable<T> AsEnumerable()
@@ -61,20 +60,30 @@ namespace FunctionalX
         public static Maybe<T> Of<T>(T value)
             => new Maybe<T>(value, value != null);
 
+        public static T GetOrElse<T>(this Maybe<T> @this, T @default)
+            => @this.IsJust
+                ? @this.Value
+                : @default;
+
+        public static T GetOrElse<T>(this Maybe<T> @this, Func<T> fallback)
+            => @this.IsJust
+                ? @this.Value
+                : fallback();
+
         public static Maybe<TR> Apply<T, TR>(this Maybe<Func<T, TR>> opt, Maybe<T> arg)
             => opt.IsJust && arg.IsJust
-                ? Just(opt.Value(arg.Value))
-                : Nothing;
+                ? Maybe.Of(opt.Value(arg.Value))
+                : NothingType.Default;
 
         public static Maybe<TR> Map<T, TR>(this Maybe<T> val, Func<T, TR> f)
             => val.IsJust
-                ? Just(f(val.Value))
-                : Nothing;
+                ? Maybe.Of(f(val.Value))
+                : NothingType.Default;
 
         public static Maybe<TR> Bind<T, TR>(this Maybe<T> val, Func<T, Maybe<TR>> func)
             => val.IsJust
                 ? func(val.Value)
-                : Nothing;
+                : NothingType.Default;
 
         public static Maybe<TR> Select<T, TR>(this Maybe<T> val, Func<T, TR> f)
             => val.Map(f);
@@ -83,6 +92,6 @@ namespace FunctionalX
             => val.Map(action.ToFunc());
 
         public static Maybe<T> Where<T>(this Maybe<T> value, Func<T, bool> predicate)
-            => value.IsJust && predicate(value.Value) ? value : Nothing;
+            => value.IsJust && predicate(value.Value) ? value : NothingType.Default;
     }
 }

@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using FunctionalX.Monads;
 
 namespace FunctionalX
 {
     public static class Functional
     {
-        // ReSharper disable once InconsistentNaming
+        // singleton unit struct
         private static readonly Unit unit = new Unit();
 
         public static Unit Unit() => unit;
@@ -33,17 +33,17 @@ namespace FunctionalX
         /// <param name="val">Default value in case Maybe is Nothing</param>
         /// <returns></returns>
         public static T FromMaybe<T>(Maybe<T> maybe, T val)
-            => maybe.IsJust ? maybe.Value : val;
+            => maybe.GetOrElse(val);
 
         /// <summary>
-        /// Unwraps the value of a maybe. Returns default value if maybe is Nothing
+        /// Unwraps the value of a maybe. Returns default() value if maybe is Nothing
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="maybe">Maybe to be unwrapped</param>
         /// <param name="fallBack">Callback in case the value is Nothing</param>
         /// <returns></returns>
-        public static T FromMaybe<T>(Maybe<T> maybe, Func<T> fallBack)
-            => maybe.IsJust ? maybe.Value : fallBack();
+        public static T FromMaybe<T>(Maybe<T> maybe, Func<T> fallback)
+            => maybe.GetOrElse(fallback);
 
         /// <summary>
         /// Unwraps the value from a maybe type.
@@ -65,7 +65,6 @@ namespace FunctionalX
         /// <typeparam name="T"></typeparam>
         /// <param name="xs"></param>
         /// <returns></returns>
-        [SuppressMessage("ReSharper", "PossibleMultipleEnumeration")]
         public static Maybe<T> ListToMaybe<T>(this IEnumerable<T> xs)
             => xs.Any() ? Just(xs.First()) : Nothing;
 
@@ -77,7 +76,7 @@ namespace FunctionalX
         /// <param name="maybe"></param>
         /// <returns></returns>
         public static IEnumerable<T> MaybeToList<T>(Maybe<T> maybe)
-            => maybe.IsJust ? new List<T>() { maybe.Value } : new List<T>();
+            => maybe.IsJust ? List(maybe.Value) : List<T>();
 
         /// <summary>
         /// This function takes a list of Maybes and returns a list of all Just values.
@@ -101,6 +100,14 @@ namespace FunctionalX
         /// <returns></returns>
         public static IEnumerable<TR> MapMaybe<T, TR>(this IEnumerable<T> xs, Func<T, Maybe<TR>> map)
             => xs.Select(map).Where(x => x.IsJust).Select(x => x.Value);
+
+        /// <summary>
+        /// Creates an empty immutable.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns>ImmutableList</returns>
+        public static IEnumerable<T> List<T>()
+            => ImmutableList.Create<T>();
 
         /// <summary>
         /// Creates an immutable list with the given values
