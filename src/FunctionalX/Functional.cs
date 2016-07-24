@@ -74,7 +74,7 @@ namespace FunctionalX
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="maybe"></param>
-        /// <returns></returns>
+        /// <returns>Returns an immutable list with either one value or empty</returns>
         public static IEnumerable<T> MaybeToList<T>(Maybe<T> maybe)
             => maybe.IsJust ? List(maybe.Value) : List<T>();
 
