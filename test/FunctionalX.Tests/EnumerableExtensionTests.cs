@@ -1,4 +1,4 @@
-﻿using System;
+﻿using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
 
@@ -47,5 +47,18 @@ namespace FunctionalX.Tests
             Assert.AreEqual("pikachu", sut.First());
             Assert.AreEqual("raichu", sut.Last());
         }
+
+        [Test]
+        public void ForEachTest()
+        {
+            var list = new List<Person> { new Person() {Name = "Jon"} };
+            var sut = list.AsEnumerable().ForEach(p => { p.Name = "Mark"; });
+            Assert.AreEqual("Mark", list.First().Name);
+        }
+    }
+
+    public class Person
+    {
+        public string Name { get; set; }
     }
 }

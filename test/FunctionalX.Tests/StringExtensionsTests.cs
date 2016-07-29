@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
+using FunctionalX.Monads;
 
 namespace FunctionalX.Tests
 {

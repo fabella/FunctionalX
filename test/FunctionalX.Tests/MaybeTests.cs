@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.Linq;
+using FunctionalX.Monads;
 
 namespace FunctionalX.Tests
 {
@@ -32,6 +33,11 @@ namespace FunctionalX.Tests
         [TestCase("marias", "marias", ExpectedResult = true)]
         public bool EqualOperatorTest(string left, string right)
             => Just(left) == Just(right);
+
+        [TestCase("pikachu", "", ExpectedResult = "pikachu")]
+        [TestCase(null, "pikachu", ExpectedResult = "pikachu")]
+        public string GetOrElseTests(string value, string @default)
+            => Just(value).GetOrElse(@default);
 
         [Test]
         public void ApplyTestsOnJust()
