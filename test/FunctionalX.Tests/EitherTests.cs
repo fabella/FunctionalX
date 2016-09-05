@@ -1,5 +1,4 @@
-﻿using System.IO.MemoryMappedFiles;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using FunctionalX.Monads;
 namespace FunctionalX.Tests
 {
@@ -35,7 +34,7 @@ namespace FunctionalX.Tests
         public void EitherRightMapTest()
         {
             var sut = Either.Of<string, int>(42);
-            Assert.AreEqual(84, sut.Map(x => x * 2));
+            Assert.AreEqual(84, sut.Map(x => x * 2).Match<int>(null, x => x));
         }
     }
 }
