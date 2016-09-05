@@ -25,6 +25,11 @@ namespace FunctionalX
         /// </summary>
         public static readonly NothingType Nothing = NothingType.Default;
 
+        public static Result<T> Ok<T>(T value) => ResultExtensions.Of(value);
+        public static Result<T> Fail<T>(string error) => ResultExtensions.Fail<T>(error);
+        public static Result Ok() => ResultExtensions.Ok();
+        public static Result Fail(string error) => ResultExtensions.Fail(error);
+
         /// <summary>
         /// Unwraps the value of a maybe. Returns default value if maybe is Nothing
         /// </summary>
